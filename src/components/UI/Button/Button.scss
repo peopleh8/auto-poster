@@ -1,0 +1,19 @@
+.btn {
+  border-radius: 7px;
+  background: #000 !important;
+  color: #fff;
+  padding: 10px !important;
+  border: 1px solid #000 !important;
+  @media (hover: hover) {
+    transition: all .2s ease;
+    &:hover {
+      background: transparent !important;
+      color: #000;
+    }
+  }
+  &[disabled] {
+    pointer-events: none;
+    user-select: none;
+    opacity: .3;
+  }
+}

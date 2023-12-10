@@ -53,7 +53,8 @@ select {
   }
 }
 
-input {
+input,
+textarea {
   display: block;
   width: 100%;
   
@@ -103,4 +104,8 @@ button,
   &:focus {
     outline: none;
   }
+}
+
+textarea {
+  resize: none;
 }
