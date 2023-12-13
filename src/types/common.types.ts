@@ -27,9 +27,10 @@ export interface FormProps {
   children: ChildType
   classes: string
   subject: string
-  article: string
   rewriteArticleHandler: (article: string) => void
   fetchingArticle: (payload: boolean) => void
+  setModalTextHander: (title: string) => void
+  toggleModalOpen: (payload: boolean) => void
 }
 
 export interface FieldProps {

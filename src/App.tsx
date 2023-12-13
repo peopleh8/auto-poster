@@ -1,16 +1,21 @@
-import { ChangeEvent, FC, useState, useRef } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import Title from './components/UI/Title/Title'
 import Form from './components/UI/Form/Form'
 import Field from './components/UI/Field/Field'
 import Button from './components/UI/Button/Button'
 import PosterButtons from './components/PosterButtons'
+import Modal from './components/UI/Modal/Modal'
 import { ButtonType, FieldTypes } from './types/common.types'
 import { useCopyToClipboard } from './hooks/use-copy'
-import './App.scss'
+import { FBAxios } from './config/axios'
 import 'normalize.css'
+import './styles/pages/App.scss'
 
 const App: FC = () => {
+  const [ isModalOpen, setModalOpen ] = useState<boolean>(false)
+  const [ modalTitleText, setModalTitleText ] = useState<string>('')
   const [ isArticleFetching, setArticleFetching ] = useState<boolean>(false)
+  const [ isArticlePostingToFB, setArticlePostingToFB ] = useState<boolean>(false)
   const [ subject, setSubject ] = useState<string>('')
   const [ article, setArticle ] = useState<string>('')
   const [ value, copy ] = useCopyToClipboard()
@@ -31,8 +36,39 @@ const App: FC = () => {
     setArticleFetching(payload)
   }
 
+  const postingArticleToFB = (payload: boolean) => {
+    setArticlePostingToFB(payload)
+  }
+
+  const toggleModalOpen = (payload: boolean) => {
+    setModalOpen(payload)
+  }
+
+  const setModalTextHander = (title: string) => {
+    setModalTitleText(title)
+  }
+
   const copyHandler = () => {
     copy(article)
+    setModalTitleText('The text has been copied!')
+    toggleModalOpen(true)
+  }
+
+  const postToFB = async () => {
+    try {
+      postingArticleToFB(true)
+      await FBAxios.post(`/feed?message=${article}`)
+
+      setModalTitleText('Article has been sent!')
+      toggleModalOpen(true)
+    } catch (e: unknown) {
+      console.error((e as Error).message)
+
+      setModalTitleText('Something went wrong, please try again!')
+      toggleModalOpen(true)
+    } finally {
+      postingArticleToFB(false)
+    }
   }
   
   return (
@@ -41,9 +77,10 @@ const App: FC = () => {
       <Form 
         classes='poster__form poster-form'
         subject={subject}
-        article={article}
         rewriteArticleHandler={rewriteArticleHandler}
         fetchingArticle={fetchingArticle}
+        setModalTextHander={setModalTextHander}
+        toggleModalOpen={toggleModalOpen}
       >
         <Field 
           classes='poster-form__field'
@@ -65,8 +102,10 @@ const App: FC = () => {
           <Button 
             classes='poster-form__btn'
             text='Post to Facebook'
+            isFetching={isArticlePostingToFB}
             type={ButtonType.Button}
             disabled={article.length < 10}
+            onClick={postToFB}
           />
           <Button 
             classes='poster-form__btn'
@@ -77,6 +116,7 @@ const App: FC = () => {
           <Button 
             classes='poster-form__btn'
             text='Copy'
+            icon
             type={ButtonType.Button}
             disabled={article.length < 10}
             onClick={copyHandler}
@@ -92,6 +132,18 @@ const App: FC = () => {
           onChange={changeArticleHandler}
         />
       </Form>
+      <Modal
+        isOpen={isModalOpen}
+        setOpen={toggleModalOpen}
+      >
+        <Title leavel={1} classes='modal__title'>{modalTitleText}</Title>
+        <Button 
+          classes='modal__btn'
+          text='Close'
+          type={ButtonType.Button}
+          onClick={() => toggleModalOpen(false)}
+        />
+      </Modal>
     </div>
   )
 }

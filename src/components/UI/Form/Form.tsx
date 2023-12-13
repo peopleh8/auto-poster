@@ -7,9 +7,10 @@ const Form: FC<FormProps> = ({
   children, 
   classes, 
   subject, 
-  article, 
   rewriteArticleHandler,
-  fetchingArticle 
+  fetchingArticle,
+  setModalTextHander,
+  toggleModalOpen
 }) => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -28,6 +29,9 @@ const Form: FC<FormProps> = ({
       }
     } catch (e: unknown) {
       console.error((e as Error).message)
+
+      setModalTextHander('Something went wrong, please try again!')
+      toggleModalOpen(true)
     } finally {
       fetchingArticle(false)
     }

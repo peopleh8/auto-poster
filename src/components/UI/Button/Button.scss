@@ -6,16 +6,28 @@
   border: 1px solid #000 !important;
   position: relative;
   transition: background .2s ease, color .2s ease, opacity .2s ease;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  img {
+    transition: filter .2s ease;
+  }
   @media (hover: hover) {
     &:hover {
       background: transparent !important;
       color: #000;
+      img {
+        filter: invert(1);
+      }
     }
   }
   @media (hover: none) {
     &:active {
       background: transparent !important;
       color: #000;
+      img {
+        filter: invert(1);
+      }
     }
   }
   &[disabled] {

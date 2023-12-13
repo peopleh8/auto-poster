@@ -1,6 +1,6 @@
 .poster {
   padding: 50px;
-  height: calc(100vh - 100px);
+  height: 100vh;
   display: flex;
   flex-direction: column;
   &__title {
@@ -16,11 +16,29 @@
     display: flex;
     gap: 20px;
     margin: 50px 0;
+    & > *:last-child {
+      flex-basis: 20%;
+    }
   }
   & > *:last-child {
     flex: 1;
     & > * {
       height: 100%;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .poster {
+    padding: 20px;
+    &__title {
+      margin-bottom: 10px;
+    }
+  }
+  .poster-form {
+    &__btns {
+      margin: 20px 0;
+      flex-direction: column;
     }
   }
 }
