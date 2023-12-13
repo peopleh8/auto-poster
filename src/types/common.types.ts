@@ -26,6 +26,10 @@ export interface TitleProps {
 export interface FormProps {
   children: ChildType
   classes: string
+  subject: string
+  article: string
+  rewriteArticleHandler: (article: string) => void
+  fetchingArticle: (payload: boolean) => void
 }
 
 export interface FieldProps {

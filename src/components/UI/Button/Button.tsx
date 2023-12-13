@@ -1,14 +1,16 @@
 import { FC } from 'react'
-import './Button.scss'
 import { ButtonProps } from '../../../types/common.types'
+import './Button.scss'
+import Loader from '../Loader/Loader'
 
-const Button: FC<ButtonProps> = ({ classes, children, ...props }) => {
+const Button: FC<ButtonProps> = ({ classes, text, isFetching, ...props }) => {
   return (
     <button 
-      className={`btn ${classes}`}
+      className={`btn ${classes} ${isFetching ? 'fetching' : ''}`}
       {...props}
     >
-      {children}
+      {text}
+      <Loader />
     </button>
   )
 }
