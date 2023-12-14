@@ -59,7 +59,7 @@ const App: FC = () => {
       postingArticleToFB(true)
       await FBAxios.post(`/feed?message=${article}`)
 
-      setModalTitleText('Article has been sent!')
+      setModalTitleText('Article has been posted!')
       toggleModalOpen(true)
     } catch (e: unknown) {
       console.error((e as Error).message)
